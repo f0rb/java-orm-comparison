@@ -1,0 +1,23 @@
+logging:
+  level:
+    root: info
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: trace
+#    org.jooq.tools.LoggerListener: debug
+#    win.doyto.query.sql.SqlAndArgs: debug
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    username: username
+    password: password
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: off
+
+doyto:
+  query:
+    config:
+      table-format: "%s"
