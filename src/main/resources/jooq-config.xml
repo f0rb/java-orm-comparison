@@ -1,0 +1,143 @@
+<configuration>
+    <!-- Configure the database connection here -->
+    <jdbc>
+        <driver>com.mysql.cj.jdbc.Driver</driver>
+        <url>jdbc:mysql://localhost:3306/</url>
+        <username>root</username>
+        <password>root</password>
+        <!--&lt;!&ndash; You can also pass user/password and other JDBC properties in the optional properties tag: &ndash;&gt;-->
+        <!--<properties>-->
+        <!--    <property>-->
+        <!--        <key>user</key>-->
+        <!--        <value>[db-user]</value>-->
+        <!--    </property>-->
+        <!--    <property>-->
+        <!--        <key>password</key>-->
+        <!--        <value>[db-password]</value>-->
+        <!--    </property>-->
+        <!--</properties>-->
+    </jdbc>
+
+    <generator>
+        <database>
+            <!-- The database dialect from jooq-meta. Available dialects are
+                 named org.jooq.meta.[database].[database]Database.
+
+                 Natively supported values are:
+
+                     org.jooq.meta.ase.ASEDatabase
+                     org.jooq.meta.auroramysql.AuroraMySQLDatabase
+                     org.jooq.meta.aurorapostgres.AuroraPostgresDatabase
+                     org.jooq.meta.clickhouse.ClickHouseDatabase
+                     org.jooq.meta.cockroachdb.CockroachDBDatabase
+                     org.jooq.meta.databricks.DatabricksDatabase
+                     org.jooq.meta.db2.DB2Database
+                     org.jooq.meta.derby.DerbyDatabase
+                     org.jooq.meta.firebird.FirebirdDatabase
+                     org.jooq.meta.h2.H2Database
+                     org.jooq.meta.hana.HANADatabase
+                     org.jooq.meta.hsqldb.HSQLDBDatabase
+                     org.jooq.meta.ignite.IgniteDatabase
+                     org.jooq.meta.informix.InformixDatabase
+                     org.jooq.meta.ingres.IngresDatabase
+                     org.jooq.meta.mariadb.MariaDBDatabase
+                     org.jooq.meta.mysql.MySQLDatabase
+                     org.jooq.meta.oracle.OracleDatabase
+                     org.jooq.meta.postgres.PostgresDatabase
+                     org.jooq.meta.redshift.RedshiftDatabase
+                     org.jooq.meta.snowflake.SnowflakeDatabase
+                     org.jooq.meta.sqldatawarehouse.SQLDataWarehouseDatabase
+                     org.jooq.meta.sqlite.SQLiteDatabase
+                     org.jooq.meta.sqlserver.SQLServerDatabase
+                     org.jooq.meta.sybase.SybaseDatabase
+                     org.jooq.meta.teradata.TeradataDatabase
+                     org.jooq.meta.trino.TrinoDatabase
+                     org.jooq.meta.vertica.VerticaDatabase
+
+                 This value can be used to reverse-engineer generic JDBC DatabaseMetaData (e.g. for MS Access)
+
+                     org.jooq.meta.jdbc.JDBCDatabase
+
+                 This value can be used to reverse-engineer standard jOOQ-meta XML formats
+
+                     org.jooq.meta.xml.XMLDatabase
+
+                 This value can be used to reverse-engineer schemas defined by SQL files
+                 (requires jooq-meta-extensions dependency)
+
+                     org.jooq.meta.extensions.ddl.DDLDatabase
+
+                 This value can be used to reverse-engineer schemas defined by JPA annotated entities
+                 (requires jooq-meta-extensions-hibernate dependency)
+
+                     org.jooq.meta.extensions.jpa.JPADatabase
+
+                 This value can be used to reverse-engineer schemas defined by Liquibase migration files
+                 (requires jooq-meta-extensions-liquibase dependency)
+
+                     org.jooq.meta.extensions.liquibase.LiquibaseDatabase
+
+                 You can also provide your own org.jooq.meta.Database implementation
+                 here, if your database is currently not supported -->
+            <!--<name>org.jooq.meta.h2.H2Database</name>-->
+            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+
+            <!-- All elements that are generated from your schema (A Java regular expression.
+                 Use the pipe to separate several expressions) Watch out for
+                 case-sensitivity. Depending on your database, this might be
+                 important!
+
+                 You can create case-insensitive regular expressions using this syntax: (?i:expr)
+
+                 Whitespace is ignored and comments are possible.
+                 -->
+            <includes>salary</includes>
+
+            <!-- All elements that are excluded from your schema (A Java regular expression.
+                 Use the pipe to separate several expressions). Excludes match before
+                 includes, i.e. excludes have a higher priority -->
+            <excludes>
+                UNUSED_TABLE # This table (unqualified name) should not be generated
+                <!--                | a.* # Objects with a given prefix should not be generated-->
+                <!--                | t_.* # Objects with a given prefix should not be generated-->
+                | SECRET_SCHEMA\.SECRET_TABLE # This table (qualified name) should not be generated
+                | SECRET_ROUTINE # This routine (unqualified name) ...
+            </excludes>
+
+            <!-- The schema that is used locally as a source for meta information.
+                 This could be your development schema or the production schema, etc
+                 This cannot be combined with the schemata element.
+
+                 If left empty, jOOQ will generate all available schemata. See the
+                 manual's next section to learn how to generate several schemata -->
+            <inputSchema>demo</inputSchema>
+        </database>
+
+        <!-- Generation flags: See advanced configuration properties -->
+        <generate>
+
+            <!-- Allows for turning on POJOs generation: default false -->
+            <pojos>true</pojos>
+
+            <!-- Optionally, limit POJOs generation to only tables matching this regular expression. -->
+            <pojosIncludes>.*</pojosIncludes>
+
+            <!-- Optionally, limit POJOs generation to only tables not matching this regular expression.
+                 Excludes match before includes. -->
+            <pojosExcludes>SYSTEM_TABLE_.*</pojosExcludes>
+        </generate>
+
+        <target>
+            <!-- The destination package of your generated classes (within the
+                 destination directory)
+
+                 jOOQ may append the schema name to this package if generating multiple schemas,
+                 e.g. org.jooq.your.packagename.schema1
+                      org.jooq.your.packagename.schema2 -->
+            <packageName>win.doyto.ormcamparison.jooq</packageName>
+
+            <!-- The destination directory of your generated classes -->
+            <!--            <directory>target/generated-sources/annotations</directory>-->
+        </target>
+    </generator>
+</configuration>

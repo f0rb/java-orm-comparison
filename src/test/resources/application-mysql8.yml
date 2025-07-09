@@ -1,0 +1,12 @@
+logging:
+  level:
+    root: warn
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DB_USER:root}
+    password: ${DB_PASS:root}
+  jpa:
+    show-sql: false

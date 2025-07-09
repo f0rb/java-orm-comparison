@@ -1,0 +1,20 @@
+logging:
+  level:
+    root: info
+#    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: trace
+#    org.jooq.tools.LoggerListener: debug
+#    win.doyto.query.sql.SqlAndArgs: debug
+
+spring:
+  datasource:
+    url: "jdbc:h2:mem:demo;MODE=MySQL;"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: off
+
+doyto:
+  query:
+    config:
+      table-format: "%s"
