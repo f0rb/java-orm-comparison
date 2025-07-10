@@ -34,14 +34,15 @@ public class SalaryJpaController extends AbstractJpaController<SalaryEntity, Lon
                 predicates.add(cb.lt(root.get("salaryInUsd"), query.getSalaryInUsdLt()));
             }
             if (query.getSalaryOr() != null) {
+                SalaryQuery salaryOr = query.getSalaryOr();
                 List<Predicate> orPredicates = new ArrayList<>();
-                if (query.getSalaryInUsdGt() != null) {
-                    orPredicates.add(cb.gt(root.get("salaryInUsd"), query.getSalaryInUsdGt()));
+                if (salaryOr.getSalaryInUsdGt() != null) {
+                    orPredicates.add(cb.gt(root.get("salaryInUsd"), salaryOr.getSalaryInUsdGt()));
                 }
-                if (query.getSalaryInUsdLt() != null) {
-                    orPredicates.add(cb.lt(root.get("salaryInUsd"), query.getSalaryInUsdLt()));
+                if (salaryOr.getSalaryInUsdLt() != null) {
+                    orPredicates.add(cb.lt(root.get("salaryInUsd"), salaryOr.getSalaryInUsdLt()));
                 }
-                cb.and(cb.or(orPredicates.toArray(new Predicate[0])));
+                predicates.add(cb.or(orPredicates.toArray(new Predicate[0])));
             }
             if (query.getSalaryInUsdGt0() != null) {
                 SalaryQuery subqueryData = query.getSalaryInUsdGt0();
@@ -49,7 +50,7 @@ public class SalaryJpaController extends AbstractJpaController<SalaryEntity, Lon
                 Root<SalaryEntity> salaryRoot = subquery.from(SalaryEntity.class);
                 subquery.select(cb.max(salaryRoot.get("salaryInUsd")))
                         .where(cb.equal(salaryRoot.get("workYear"), subqueryData.getWorkYear()));
-                return cb.greaterThan(root.get("salaryInUsd"), subquery);
+                predicates.add(cb.gt(root.get("salaryInUsd"), subquery));
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };

@@ -48,12 +48,13 @@ public class SalaryJooqController {
             condition = condition.and(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
         }
         if (query.getSalaryOr() != null) {
+            SalaryQuery salaryOr = query.getSalaryOr();
             Condition orCondition = noCondition();
-            if (query.getSalaryInUsdLt() != null) {
-                orCondition = orCondition.or(SALARY.SALARY_IN_USD.lt(query.getSalaryInUsdLt()));
+            if (salaryOr.getSalaryInUsdLt() != null) {
+                orCondition = orCondition.or(SALARY.SALARY_IN_USD.lt(salaryOr.getSalaryInUsdLt()));
             }
-            if (query.getSalaryInUsdGt() != null) {
-                orCondition = orCondition.or(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
+            if (salaryOr.getSalaryInUsdGt() != null) {
+                orCondition = orCondition.or(SALARY.SALARY_IN_USD.gt(salaryOr.getSalaryInUsdGt()));
             }
             condition = condition.and(orCondition);
         }
