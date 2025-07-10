@@ -20,5 +20,5 @@ public class SalaryQuery extends PageQuery {
     private BigDecimal salaryInUsdLt;
     private BigDecimal salaryInUsdGt;
     private SalaryQuery salaryOr;
-    private SalaryQuery salaryInUsdGtAll;
+    private SalaryQuery salaryInUsdGt0;
 }

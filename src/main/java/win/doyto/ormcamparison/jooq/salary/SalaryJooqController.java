@@ -11,7 +11,7 @@ import win.doyto.query.core.PageList;
 
 import java.util.List;
 
-import static org.jooq.impl.DSL.noCondition;
+import static org.jooq.impl.DSL.*;
 import static win.doyto.ormcamparison.jooq.Tables.SALARY;
 
 /**
@@ -24,18 +24,15 @@ import static win.doyto.ormcamparison.jooq.Tables.SALARY;
 @RequestMapping("/jooq/salary")
 public class SalaryJooqController {
     private DSLContext dslContext;
-
     @GetMapping("/")
     public PageList<Salary> query(SalaryQuery query) {
-        List<Salary> Salaries = dslContext.select().from(SALARY)
+        List<Salary> salaries = dslContext.select().from(SALARY)
                 .where(buildCondition(query))
                 .limit(query.getPageNumber(), query.getPageSize())
                 .fetchInto(Salary.class);
-
         long count = dslContext.fetchCount(SALARY, buildCondition(query));
-        return new PageList<>(Salaries, count);
+        return new PageList<>(salaries, count);
     }
-
     public Condition buildCondition(SalaryQuery query) {
         Condition condition = noCondition();
         if (query.getWorkYear() != null) {
@@ -49,6 +46,20 @@ public class SalaryJooqController {
         }
         if (query.getSalaryInUsdGt() != null) {
             condition = condition.and(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
+        }
+        if (query.getSalaryOr() != null) {
+            Condition orCondition = noCondition();
+            if (query.getSalaryInUsdLt() != null) {
+                orCondition = orCondition.or(SALARY.SALARY_IN_USD.lt(query.getSalaryInUsdLt()));
+            }
+            if (query.getSalaryInUsdGt() != null) {
+                orCondition = orCondition.or(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
+            }
+            condition = condition.and(orCondition);
+        }
+        if (query.getSalaryInUsdGt0() != null) {
+            Condition subCondition = buildCondition(query.getSalaryInUsdGt0());
+            condition = condition.and(SALARY.SALARY_IN_USD.gt(select(max(SALARY.SALARY_IN_USD)).from(SALARY).where(subCondition)));
         }
         return condition;
     }

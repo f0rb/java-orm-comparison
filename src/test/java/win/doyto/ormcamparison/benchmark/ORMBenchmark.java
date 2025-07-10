@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-Xms256M", "-Xmx2G", "-XX:+UseG1GC"})
 @Threads(8)
-@Warmup(iterations = 5, time = 1)
+@Warmup(iterations = 4, time = 2)
 @Measurement(iterations = 3, time = 3)
 public class ORMBenchmark {
 
@@ -126,6 +126,25 @@ public class ORMBenchmark {
         ;
     }
 
+    @Benchmark
+    @Test
+    public void jpaQuery2() throws Exception {
+        mockMvc.perform(get("/jpa" + q2))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.size()").value(10))
+                .andExpect(jsonPath("$.content[*].id", hasItems(ids2)))
+        ;
+    }
+
+    @Benchmark
+    @Test
+    public void jooqQuery2() throws Exception {
+        mockMvc.perform(get("/jooq" + q2))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list.size()").value(10))
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids2)))
+        ;
+    }
 
     String q3 = "/salary/?workYear=2025&salaryInUsdGt0.workYear=2023";
     Integer[] ids3 = new Integer[]{56675, 56676, 16197, 39564};
@@ -134,6 +153,33 @@ public class ORMBenchmark {
     @Test
     public void dqQuery3() throws Exception {
         mockMvc.perform(get("/dq" + q3))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids3)))
+        ;
+    }
+
+    @Benchmark
+    @Test
+    public void jdbcQuery3() throws Exception {
+        mockMvc.perform(get("/jdbc" + q3))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids3)))
+        ;
+    }
+
+    @Benchmark
+    @Test
+    public void jpaQuery3() throws Exception {
+        mockMvc.perform(get("/jpa" + q3))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[*].id", hasItems(ids3)))
+        ;
+    }
+
+    @Benchmark
+    @Test
+    public void jooqQuery3() throws Exception {
+        mockMvc.perform(get("/jooq" + q3))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.list[*].id", hasItems(ids3)))
         ;

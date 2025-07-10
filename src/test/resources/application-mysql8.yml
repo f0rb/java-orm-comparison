@@ -1,6 +1,8 @@
 logging:
   level:
     root: warn
+    org.jooq.tools.LoggerListener: warn
+    win.doyto.query.sql.SqlAndArgs: warn
 
 spring:
   datasource:

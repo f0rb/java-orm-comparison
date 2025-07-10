@@ -1,6 +1,6 @@
 package win.doyto.ormcamparison.jdbc.salary;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,24 +21,22 @@ import java.util.StringJoiner;
 @RestController
 @RequestMapping("/jdbc/salary")
 public class SalaryJdbcController {
-    @Autowired
+    @Resource
     private JdbcTemplate jdbcTemplate;
     private RowMapper<SalaryEntity> rowMapper = new BeanPropertyRowMapper<>(SalaryEntity.class);
-
     @GetMapping("/")
-    public PageList<SalaryEntity> query(SalaryQuery query) {
+    public PageList<SalaryEntity> page(SalaryQuery query) {
         List<Object> argList = new ArrayList<>();
         String where = buildWhere(query, argList);
         String page = " LIMIT " + query.getPageSize() + " OFFSET " + query.getPageNumber() * query.getPageSize();
-        List<SalaryEntity> entities = jdbcTemplate.query("SELECT id, work_year, experience_level, employment_type, job_title, salary, salary_currency, salary_in_usd, employee_residence, remote_ratio, company_location, company_size FROM salary" + where + page, rowMapper, argList.toArray());
-        long count = jdbcTemplate.queryForObject("SELECT count(0) FROM salary" + where, argList.toArray(), long.class);
+        String sql = "SELECT id, work_year, experience_level, employment_type, job_title, salary, salary_currency, salary_in_usd, employee_residence, remote_ratio, company_location, company_size FROM salary" + where + page;
+        List<SalaryEntity> entities = jdbcTemplate.query(sql, rowMapper, argList.toArray());
+        long count = jdbcTemplate.queryForObject("SELECT count(0) FROM salary" + where, long.class, argList.toArray());
         return new PageList<>(entities, count);
     }
-
     public String buildWhere(SalaryQuery query, List<Object> argList) {
         return buildWhere(query, argList, " AND ", " WHERE ", "");
     }
-
     public String buildWhere(SalaryQuery query, List<Object> argList, String delimiter, String prefix, String suffix) {
         StringJoiner where = new StringJoiner(delimiter, prefix, suffix);
         where.setEmptyValue("");
@@ -60,6 +58,10 @@ public class SalaryJdbcController {
         }
         if (query.getSalaryOr() != null) {
             where.add(buildWhere(query.getSalaryOr(), argList, " OR ", "(", ")"));
+        }
+        if (query.getSalaryInUsdGt0() != null) {
+            String condition = "salary_in_usd > (SELECT max(salary_in_usd) FROM salary";
+            where.add(condition + buildWhere(query.getSalaryInUsdGt0(), argList, " AND ", " WHERE ", ")"));
         }
         return where.toString();
     }

@@ -18,5 +18,5 @@ public class SalaryQuery extends PageQuery {
     private Double salaryInUsdLt;
     private Double salaryInUsdGt;
     private SalaryQuery salaryOr;
-    private SalaryQuery salaryInUsdGtAll;
+    private SalaryQuery salaryInUsdGt0;
 }
