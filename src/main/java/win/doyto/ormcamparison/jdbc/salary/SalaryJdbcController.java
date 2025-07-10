@@ -36,19 +36,19 @@ public class SalaryJdbcController {
     }
 
     public String buildWhere(SalaryQuery query, List<Object> argList) {
-        StringJoiner where = new StringJoiner(" AND ", " WHERE ", "");
+        return buildWhere(query, argList, " AND ", " WHERE ", "");
+    }
+
+    public String buildWhere(SalaryQuery query, List<Object> argList, String delimiter, String prefix, String suffix) {
+        StringJoiner where = new StringJoiner(delimiter, prefix, suffix);
         where.setEmptyValue("");
-        if (query.getSalaryCurrency() != null) {
-            where.add("salary_currency = ?");
-            argList.add(query.getSalaryCurrency());
+        if (query.getWorkYear() != null) {
+            where.add("work_year = ?");
+            argList.add(query.getWorkYear());
         }
-        if (query.getSalaryLt() != null) {
-            where.add("salary < ?");
-            argList.add(query.getSalaryLt());
-        }
-        if (query.getSalaryGt() != null) {
-            where.add("salary > ?");
-            argList.add(query.getSalaryGt());
+        if (query.getJobTitle() != null) {
+            where.add("job_title = ?");
+            argList.add(query.getJobTitle());
         }
         if (query.getSalaryInUsdLt() != null) {
             where.add("salary_in_usd < ?");
@@ -58,9 +58,8 @@ public class SalaryJdbcController {
             where.add("salary_in_usd > ?");
             argList.add(query.getSalaryInUsdGt());
         }
-        if (query.getCompanySize() != null) {
-            where.add("company_size > ?");
-            argList.add(query.getCompanySize());
+        if (query.getSalaryOr() != null) {
+            where.add(buildWhere(query.getSalaryOr(), argList, " OR ", "(", ")"));
         }
         return where.toString();
     }

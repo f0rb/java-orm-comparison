@@ -61,8 +61,8 @@ public class ORMBenchmark {
         context.close();
     }
 
-    String q1 = "/salary/?salaryLt=100000&salaryCurrency=USD&pageSize=10";
-    Integer[] ids1 = new Integer[]{131024, 133235, 135863, 136160, 52952, 52953, 52954, 52955, 52956, 52957};
+    String q1 = "/salary/?salaryInUsdLt=100000&salaryInUsdGt=20000&pageSize=10";
+    Integer[] ids1 = new Integer[]{136636, 39796, 40467, 61360, 30092, 5972, 11529, 12364, 31945, 40303};
 
     @Benchmark
     @Test
@@ -104,7 +104,38 @@ public class ORMBenchmark {
         ;
     }
 
-//    String q2 = "/salary/?salaryInUsdLt=200000&salaryInUsdGt=100000&companySize=M&pageSize=10";
+    String q2 = "/salary/?jobTitle=Researcher&salaryOr.salaryInUsdGt=300000&salaryOr.salaryInUsdLt=80000&pageSize=10";
+    Integer[] ids2 = new Integer[]{9488, 9487, 7292, 216, 7291, 215, 1227, 1228, 14586, 14587};
+
+    @Benchmark
+    @Test
+    public void dqQuery2() throws Exception {
+        mockMvc.perform(get("/dq" + q2))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids2)))
+        ;
+    }
+
+    @Benchmark
+    @Test
+    public void jdbcQuery2() throws Exception {
+        mockMvc.perform(get("/jdbc" + q2))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list.size()").value(10))
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids2)))
+        ;
+    }
 
 
+    String q3 = "/salary/?workYear=2025&salaryInUsdGt0.workYear=2023";
+    Integer[] ids3 = new Integer[]{56675, 56676, 16197, 39564};
+
+    @Benchmark
+    @Test
+    public void dqQuery3() throws Exception {
+        mockMvc.perform(get("/dq" + q3))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.list[*].id", hasItems(ids3)))
+        ;
+    }
 }

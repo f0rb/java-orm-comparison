@@ -13,10 +13,10 @@ import win.doyto.query.core.PageQuery;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalaryQuery extends PageQuery {
-    private String salaryCurrency;
-    private Double salaryGt;
-    private Double salaryLt;
+    private Integer workYear;
+    private String jobTitle;
     private Double salaryInUsdLt;
     private Double salaryInUsdGt;
-    private String companySize;
+    private SalaryQuery salaryOr;
+    private SalaryQuery salaryInUsdGtAll;
 }

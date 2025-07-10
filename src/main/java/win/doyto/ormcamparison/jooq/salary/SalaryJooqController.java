@@ -38,23 +38,17 @@ public class SalaryJooqController {
 
     public Condition buildCondition(SalaryQuery query) {
         Condition condition = noCondition();
-        if (query.getSalaryCurrency() != null) {
-            condition = condition.and(SALARY.SALARY_CURRENCY.eq(query.getSalaryCurrency()));
+        if (query.getWorkYear() != null) {
+            condition = condition.and(SALARY.WORK_YEAR.eq(query.getWorkYear()));
         }
-        if (query.getSalaryLt() != null) {
-            condition = condition.and(SALARY.SALARY_.lt(query.getSalaryLt()));
-        }
-        if (query.getSalaryGt() != null) {
-            condition = condition.and(SALARY.SALARY_.gt(query.getSalaryGt()));
+        if (query.getJobTitle() != null) {
+            condition = condition.and(SALARY.JOB_TITLE.eq(query.getJobTitle()));
         }
         if (query.getSalaryInUsdLt() != null) {
-            condition = condition.and(SALARY.SALARY_.lt(query.getSalaryInUsdLt()));
+            condition = condition.and(SALARY.SALARY_IN_USD.lt(query.getSalaryInUsdLt()));
         }
         if (query.getSalaryInUsdGt() != null) {
-            condition = condition.and(SALARY.SALARY_.gt(query.getSalaryInUsdGt()));
-        }
-        if (query.getCompanySize() != null) {
-            condition = condition.and(SALARY.COMPANY_SIZE.gt(query.getCompanySize()));
+            condition = condition.and(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
         }
         return condition;
     }

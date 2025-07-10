@@ -15,9 +15,9 @@ CREATE TABLE salary (
     remote_ratio INT NOT NULL COMMENT '0=No remote, 50=Hybrid, 100=Fully remote',
     company_location CHAR(2) NOT NULL,
     company_size CHAR(1) NOT NULL COMMENT 'S=Small, M=Medium, L=Large',
-    INDEX (job_title),
-    INDEX (salary_in_usd),
-    INDEX (salary_currency,salary)
+    INDEX (salary_in_usd, employee_residence),
+    INDEX (work_year,salary_in_usd),
+    INDEX (job_title,salary_in_usd)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO salary(work_year, experience_level, employment_type, job_title, salary, salary_currency, salary_in_usd, employee_residence, remote_ratio, company_location, company_size)(

@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalaryQuery extends PageQuery {
-    private String salaryCurrency;
-    private BigDecimal salaryGt;
-    private BigDecimal salaryLt;
+    private Integer workYear;
+    private String jobTitle;
     private BigDecimal salaryInUsdLt;
     private BigDecimal salaryInUsdGt;
-    private String companySize;
+    private SalaryQuery salaryOr;
+    private SalaryQuery salaryInUsdGtAll;
 }

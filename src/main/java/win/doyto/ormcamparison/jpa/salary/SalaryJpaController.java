@@ -19,23 +19,17 @@ public class SalaryJpaController extends AbstractJpaController<SalaryEntity, Lon
     protected Specification<SalaryEntity> toSpecification(SalaryQuery query) {
         return (root, cq, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (query.getSalaryCurrency() != null) {
-                predicates.add(cb.equal(root.get("salaryCurrency"), query.getSalaryCurrency()));
+            if (query.getWorkYear() != null) {
+                predicates.add(cb.equal(root.get("work_year"), query.getWorkYear()));
             }
-            if (query.getSalaryGt() != null) {
-                predicates.add(cb.gt(root.get("salary"), query.getSalaryGt()));
-            }
-            if (query.getSalaryLt() != null) {
-                predicates.add(cb.lt(root.get("salary"), query.getSalaryLt()));
+            if (query.getJobTitle() != null) {
+                predicates.add(cb.equal(root.get("job_title"), query.getJobTitle()));
             }
             if (query.getSalaryInUsdGt() != null) {
                 predicates.add(cb.gt(root.get("salaryInUsd"), query.getSalaryInUsdGt()));
             }
             if (query.getSalaryInUsdLt() != null) {
                 predicates.add(cb.lt(root.get("salaryInUsd"), query.getSalaryInUsdLt()));
-            }
-            if (query.getCompanySize() != null) {
-                predicates.add(cb.equal(root.get("companySize"), query.getCompanySize()));
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };
