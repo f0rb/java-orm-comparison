@@ -17,6 +17,6 @@ public class SalaryQuery extends PageQuery {
     private String jobTitle;
     private Double salaryInUsdLt;
     private Double salaryInUsdGt;
-    private SalaryQuery salaryOr;
+    private SalaryQuery or;
     private SalaryQuery salaryInUsdGt0;
 }

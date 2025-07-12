@@ -33,8 +33,8 @@ public class SalaryJpaController extends AbstractJpaController<SalaryEntity, Lon
             if (query.getSalaryInUsdLt() != null) {
                 predicates.add(cb.lt(root.get("salaryInUsd"), query.getSalaryInUsdLt()));
             }
-            if (query.getSalaryOr() != null) {
-                SalaryQuery salaryOr = query.getSalaryOr();
+            if (query.getOr() != null) {
+                SalaryQuery salaryOr = query.getOr();
                 List<Predicate> orPredicates = new ArrayList<>();
                 if (salaryOr.getSalaryInUsdGt() != null) {
                     orPredicates.add(cb.gt(root.get("salaryInUsd"), salaryOr.getSalaryInUsdGt()));

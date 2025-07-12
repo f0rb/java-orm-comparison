@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-Xms256M", "-Xmx2G", "-XX:+UseG1GC"})
 @Threads(8)
-@Warmup(iterations = 4, time = 2)
+@Warmup(iterations = 8, time = 1)
 @Measurement(iterations = 3, time = 3)
 public class ORMBenchmark {
 
@@ -61,7 +61,7 @@ public class ORMBenchmark {
         context.close();
     }
 
-    String q1 = "/salary/?salaryInUsdLt=100000&salaryInUsdGt=20000&pageSize=10";
+    String q1 = "/salary/?work_year=2025&salaryInUsdLt=100000&salaryInUsdGt=20000&pageSize=10";
     Integer[] ids1 = new Integer[]{136636, 39796, 40467, 61360, 30092, 5972, 11529, 12364, 31945, 40303};
 
     @Benchmark
@@ -104,8 +104,8 @@ public class ORMBenchmark {
         ;
     }
 
-    String q2 = "/salary/?jobTitle=Researcher&salaryOr.salaryInUsdGt=300000&salaryOr.salaryInUsdLt=80000&pageSize=10";
-    Integer[] ids2 = new Integer[]{9488, 9487, 7292, 216, 7291, 215, 1227, 1228, 14586, 14587};
+    String q2 = "/salary/?jobTitle=Researcher&or.salaryInUsdGt=300000&or.salaryInUsdLt=30000&pageSize=10";
+    Integer[] ids2 = new Integer[]{9488, 9487, 7599, 9003, 4949, 12564, 509, 10037, 13123, 8430};
 
     @Benchmark
     @Test

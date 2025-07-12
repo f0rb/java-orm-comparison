@@ -56,8 +56,8 @@ public class SalaryJdbcController {
             where.add("salary_in_usd > ?");
             argList.add(query.getSalaryInUsdGt());
         }
-        if (query.getSalaryOr() != null) {
-            where.add(buildWhere(query.getSalaryOr(), argList, " OR ", "(", ")"));
+        if (query.getOr() != null) {
+            where.add(buildWhere(query.getOr(), argList, " OR ", "(", ")"));
         }
         if (query.getSalaryInUsdGt0() != null) {
             String condition = "salary_in_usd > (SELECT max(salary_in_usd) FROM salary";

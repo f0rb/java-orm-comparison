@@ -47,8 +47,8 @@ public class SalaryJooqController {
         if (query.getSalaryInUsdGt() != null) {
             condition = condition.and(SALARY.SALARY_IN_USD.gt(query.getSalaryInUsdGt()));
         }
-        if (query.getSalaryOr() != null) {
-            SalaryQuery salaryOr = query.getSalaryOr();
+        if (query.getOr() != null) {
+            SalaryQuery salaryOr = query.getOr();
             Condition orCondition = noCondition();
             if (salaryOr.getSalaryInUsdLt() != null) {
                 orCondition = orCondition.or(SALARY.SALARY_IN_USD.lt(salaryOr.getSalaryInUsdLt()));
